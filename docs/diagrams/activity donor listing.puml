@@ -1,0 +1,46 @@
+@startuml FoodRescue_Donor_Food_Listing
+
+title FoodRescue — Donor Food Listing Activity
+
+start
+
+:Donor logs in;
+
+if (Credentials valid?) then (Yes)
+
+    :Open donor dashboard;
+    :Select "Create Food Listing";
+
+    :Enter food details;
+    :Enter quantity;
+    :Enter preparation time;
+    :Enter expiry/use-by time;
+    :Enter dietary type;
+    :Enter pickup location;
+    :Enter additional information;
+
+    :Submit listing;
+
+    if (Listing data valid?) then (Yes)
+
+        :Create food listing;
+        :Set listing status to Available;
+        :Calculate initial priority;
+        :Display listing confirmation;
+
+    else (No)
+
+        :Display validation errors;
+        :Correct listing information;
+
+    endif
+
+else (No)
+
+    :Display login error;
+
+endif
+
+stop
+
+@enduml
