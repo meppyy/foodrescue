@@ -1,0 +1,29 @@
+@startuml FoodRescue_DFD_Level_0
+
+title FoodRescue — Level 0 Data Flow Diagram
+
+skinparam shadowing false
+skinparam rectangle {
+    RoundCorner 15
+}
+
+rectangle "Donor" as Donor
+rectangle "Recipient" as Recipient
+rectangle "Volunteer" as Volunteer
+rectangle "Administrator" as Admin
+
+rectangle "FoodRescue System" as System
+
+Donor --> System : Registration,\nfood listings,\nrequest decisions,\nhandover details
+System --> Donor : Listing status,\nrequests,\nnotifications,\ndonation statistics
+
+Recipient --> System : Registration,\nsearch criteria,\nfood requests,\nreceipt confirmation
+System --> Recipient : Food listings,\nrequest status,\nallocations,\nnotifications
+
+Volunteer --> System : Availability,\nassignment response,\npickup/delivery updates
+System --> Volunteer : Assignments,\npickup/delivery details,\nnotifications
+
+Admin --> System : User management,\nverification decisions,\nmonitoring actions,\nsettings
+System --> Admin : Users,\nlistings,\nrequests,\nreports,\nstatistics
+
+@enduml

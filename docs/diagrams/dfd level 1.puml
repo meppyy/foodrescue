@@ -1,0 +1,108 @@
+@startuml FoodRescue_DFD_Level_1
+
+title FoodRescue — Level 1 Data Flow Diagram
+
+left to right direction
+skinparam shadowing false
+
+' External entities
+rectangle "Donor" as Donor
+rectangle "Recipient" as Recipient
+rectangle "Volunteer" as Volunteer
+rectangle "Administrator" as Admin
+
+' Processes
+circle "1.0\nAuthentication &\nUser Management" as P1
+circle "2.0\nFood Listing\nManagement" as P2
+circle "3.0\nRequest &\nAllocation Management" as P3
+circle "4.0\nPickup & Delivery\nManagement" as P4
+circle "5.0\nNotification\nManagement" as P5
+circle "6.0\nMonitoring &\nImpact Management" as P6
+
+' Data stores
+database "D1\nUser Data" as D1
+database "D2\nFood Listing Data" as D2
+database "D3\nRequest & Allocation Data" as D3
+database "D4\nDelivery / Assignment Data" as D4
+database "D5\nNotification Data" as D5
+
+' Donor flows
+Donor --> P1 : Registration /\nLogin data
+P1 --> D1 : User data
+D1 --> P1 : User information
+P1 --> Donor : Authentication result
+
+Donor --> P2 : Food listing data /\nListing updates
+P2 --> D2 : Create / update listing
+D2 --> P2 : Listing data
+P2 --> Donor : Listing status
+
+Donor --> P3 : Request decision
+P3 --> D3 : Approval /\nrejection data
+P3 --> Donor : Request information
+
+Donor --> P6 : Impact query
+P6 --> Donor : Donation statistics
+
+' Recipient flows
+Recipient --> P1 : Registration /\nLogin data
+P1 --> Recipient : Authentication result
+
+Recipient --> P2 : Search /\nfilter criteria
+P2 --> D2 : Listing query
+D2 --> P2 : Available listings
+P2 --> Recipient : Food listings /\ndetails
+
+Recipient --> P3 : Food request /\ncancellation
+P3 --> D3 : Request data
+D3 --> P3 : Request status
+P3 --> Recipient : Request /\nallocation status
+
+Recipient --> P4 : Receipt confirmation
+P4 --> Recipient : Delivery information
+
+' Volunteer flows
+Volunteer --> P1 : Registration /\nLogin data
+P1 --> D1 : Volunteer data
+
+Volunteer --> P4 : Assignment response /\nstatus updates
+P4 --> D4 : Assignment /\ndelivery data
+D4 --> P4 : Assignment information
+P4 --> Volunteer : Pickup /\ndelivery details
+
+' Administrator flows
+Admin --> P1 : User management
+P1 --> D1 : Account updates
+D1 --> P1 : User data
+
+Admin --> P2 : Listing monitoring /\nmanagement
+P2 --> D2 : Listing actions
+
+Admin --> P3 : Request /\nallocation monitoring
+P3 --> D3 : Allocation actions
+
+Admin --> P4 : Delivery monitoring
+P4 --> D4 : Assignment data
+
+Admin --> P6 : Reports /\nstatistics request
+P6 --> D1 : User data
+P6 --> D2 : Listing data
+P6 --> D3 : Transaction data
+P6 --> D4 : Delivery data
+P6 --> Admin : Reports /\nstatistics
+
+' Notifications
+P1 --> P5 : Authentication /\naccount events
+P2 --> P5 : Listing /\nexpiry events
+P3 --> P5 : Request /\nallocation events
+P4 --> P5 : Pickup /\ndelivery events
+
+P5 --> D5 : Notification records
+D5 --> P5 : Notification data
+
+P5 --> Donor : Notifications
+P5 --> Recipient : Notifications
+P5 --> Volunteer : Notifications
+P5 --> Admin : Notifications
+
+@enduml
