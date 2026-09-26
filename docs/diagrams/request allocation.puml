@@ -1,0 +1,44 @@
+@startuml FoodRescue_Request_Allocation
+
+title FoodRescue — Request Approval & Allocation Activity
+
+start
+
+:Recipient submits food request;
+:Set request status to Pending;
+:Notify donor;
+
+:Donor / Administrator reviews request;
+
+if (Request acceptable?) then (Yes)
+
+    :Approve request;
+    :Check available food quantity;
+
+    if (Quantity available?) then (Yes)
+
+        :Create allocation;
+        :Set request status to Allocated;
+        :Reserve allocated quantity;
+        :Notify recipient;
+        :Begin pickup coordination;
+
+    else (No)
+
+        :Reject allocation;
+        :Notify recipient;
+        :Update request status;
+
+    endif
+
+else (No)
+
+    :Reject request;
+    :Set request status to Rejected;
+    :Notify recipient;
+
+endif
+
+stop
+
+@enduml

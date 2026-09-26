@@ -19,3 +19,12 @@ The system validates the listing availability and requested quantity before crea
 
 Source:
 `recipient request.puml`
+
+### 3.3.3 Request Approval and Allocation
+
+The Request Approval and Allocation activity diagram represents the process through which a submitted food request is reviewed by an authorized donor or administrator.
+
+An approved request is checked against the available food quantity before an allocation is created. Once the allocation is created, the request proceeds to pickup coordination.
+
+Source:
+`request allocation.puml`
