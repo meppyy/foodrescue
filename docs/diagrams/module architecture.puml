@@ -1,0 +1,65 @@
+@startuml FoodRescue_Module_Architecture
+
+title FoodRescue — Module Architecture
+
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "FoodRescue Application" {
+
+    package "Core Modules" {
+
+        [Authentication &\nUser Management] as Auth
+        [Food Listing\nManagement] as Listing
+        [Search &\nFiltering] as Search
+        [Prioritization] as Priority
+        [Recipient\nMatching] as Matching
+        [Request &\nAllocation] as Request
+        [Pickup &\nDelivery] as Delivery
+        [Expiry\nManagement] as Expiry
+        [Notifications] as Notification
+        [Dashboards] as Dashboard
+        [Impact\nTracking] as Impact
+        [Administration] as Admin
+    }
+}
+
+Auth --> Listing : authorized users
+Auth --> Request : authorization
+Auth --> Delivery : authorization
+Auth --> Admin : administrator access
+
+Listing --> Search : listing data
+Listing --> Priority : listing data
+Listing --> Matching : food information
+Listing --> Expiry : expiry information
+
+Search --> Request : selected listing
+Priority --> Search : priority information
+Priority --> Matching : urgency information
+
+Matching --> Request : suitable recipients
+
+Request --> Delivery : approved allocation
+Request --> Notification : request events
+
+Delivery --> Notification : pickup/delivery events
+Expiry --> Notification : expiry events
+Listing --> Notification : listing events
+
+Delivery --> Impact : completion data
+Listing --> Impact : listing data
+Request --> Impact : transaction data
+
+Dashboard --> Impact : impact statistics
+Dashboard --> Listing : listing statistics
+Dashboard --> Request : request statistics
+Dashboard --> Delivery : delivery statistics
+
+Admin --> Auth : user management
+Admin --> Listing : listing management
+Admin --> Request : request monitoring
+Admin --> Delivery : delivery monitoring
+Admin --> Dashboard : system monitoring
+
+@enduml
