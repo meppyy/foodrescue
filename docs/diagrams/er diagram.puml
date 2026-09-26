@@ -1,0 +1,108 @@
+@startuml FoodRescue_ER_Diagram
+
+title FoodRescue — Entity Relationship Diagram
+
+hide methods
+hide stereotypes
+skinparam linetype ortho
+skinparam shadowing false
+
+entity User {
+    * user_id : INT <<PK>>
+    --
+    name : VARCHAR
+    email : VARCHAR <<UNIQUE>>
+    password : VARCHAR
+    phone : VARCHAR
+    role : VARCHAR
+    status : VARCHAR
+    created_at : DATETIME
+}
+
+entity Donor {
+    * donor_id : INT <<PK>>
+    --
+    user_id : INT <<FK>>
+    organization_name : VARCHAR
+    address : TEXT
+}
+
+entity Recipient {
+    * recipient_id : INT <<PK>>
+    --
+    user_id : INT <<FK>>
+    organization_name : VARCHAR
+    verification_status : VARCHAR
+    address : TEXT
+}
+
+entity Volunteer {
+    * volunteer_id : INT <<PK>>
+    --
+    user_id : INT <<FK>>
+    availability : VARCHAR
+    service_area : VARCHAR
+}
+
+entity FoodListing {
+    * listing_id : INT <<PK>>
+    --
+    donor_id : INT <<FK>>
+    food_name : VARCHAR
+    category : VARCHAR
+    quantity : DECIMAL
+    preparation_time : DATETIME
+    listing_time : DATETIME
+    expiry_time : DATETIME
+    location : TEXT
+    dietary_type : VARCHAR
+    status : VARCHAR
+}
+
+entity FoodRequest {
+    * request_id : INT <<PK>>
+    --
+    listing_id : INT <<FK>>
+    recipient_id : INT <<FK>>
+    requested_quantity : DECIMAL
+    request_time : DATETIME
+    status : VARCHAR
+}
+
+entity Allocation {
+    * allocation_id : INT <<PK>>
+    --
+    request_id : INT <<FK>>
+    volunteer_id : INT <<FK>>
+    pickup_time : DATETIME
+    delivery_time : DATETIME
+    status : VARCHAR
+}
+
+entity Notification {
+    * notification_id : INT <<PK>>
+    --
+    user_id : INT <<FK>>
+    message : TEXT
+    type : VARCHAR
+    read_status : BOOLEAN
+    created_at : DATETIME
+}
+
+User ||--o| Donor : "has donor profile"
+User ||--o| Recipient : "has recipient profile"
+User ||--o| Volunteer : "has volunteer profile"
+
+Donor ||--o{ FoodListing : "creates"
+
+FoodListing ||--o{ FoodRequest : "receives"
+
+Recipient ||--o{ FoodRequest : "submits"
+
+FoodRequest ||--o| Allocation : "results in"
+
+Volunteer ||--o{ Allocation : "handles"
+
+User ||--o{ Notification : "receives"
+
+@enduml
