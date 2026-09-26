@@ -1,0 +1,60 @@
+@startuml FoodRescue_Recipient_Food_Request
+
+title FoodRescue — Recipient Food Request Activity
+
+start
+
+:Recipient logs in;
+
+if (Credentials valid?) then (Yes)
+
+    :Open recipient dashboard;
+    :Browse available food listings;
+    :Search / filter food listings;
+    :Select food listing;
+    :View food details;
+
+    if (Food listing available?) then (Yes)
+
+        :Enter requested quantity;
+
+        if (Quantity within available amount?) then (Yes)
+
+            :Submit food request;
+
+            if (Request data valid?) then (Yes)
+
+                :Create food request;
+                :Set request status to Pending;
+                :Notify donor;
+                :Display request confirmation;
+
+            else (No)
+
+                :Display validation errors;
+                :Correct request information;
+
+            endif
+
+        else (No)
+
+            :Display insufficient quantity message;
+            :Enter valid quantity;
+
+        endif
+
+    else (No)
+
+        :Display listing unavailable message;
+
+    endif
+
+else (No)
+
+    :Display login error;
+
+endif
+
+stop
+
+@enduml
