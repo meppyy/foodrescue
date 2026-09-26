@@ -1,6 +1,8 @@
 from flask import Flask
 
 from .extensions import db, login_manager
+from . import models
+
 
 def create_app():
     app = Flask(
@@ -18,7 +20,7 @@ def create_app():
     def health_check():
         return {
             "status": "success",
-            "message": "FoodRescue backend is running"
+            "message": "FoodRescue backend is running",
         }
 
     return app
