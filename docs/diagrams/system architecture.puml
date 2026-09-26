@@ -1,0 +1,51 @@
+@startuml FoodRescue_System_Architecture
+
+title FoodRescue — System Architecture
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+package "Client Layer" {
+    component "Web Browser" as Browser
+}
+
+package "Presentation Layer" {
+    component "HTML / CSS / JavaScript" as Frontend
+    component "Bootstrap UI" as Bootstrap
+}
+
+package "Application Layer" {
+    component "Flask Application" as Flask
+    component "Authentication & Authorization" as Auth
+    component "Route / Controller Layer" as Routes
+
+    component "Business Services" as Services {
+        component "Food Listing Service" as ListingService
+        component "Request & Allocation Service" as RequestService
+        component "Prioritization Service" as PriorityService
+        component "Recipient Matching Service" as MatchService
+        component "Delivery Service" as DeliveryService
+        component "Expiry Service" as ExpiryService
+        component "Notification Service" as NotificationService
+    }
+}
+
+package "Data Access Layer" {
+    component "SQLAlchemy ORM" as ORM
+    component "PyMySQL Driver" as Driver
+}
+
+database "MySQL\nFoodRescue Database" as DB
+
+Browser --> Frontend
+Frontend --> Bootstrap
+Frontend --> Routes
+
+Routes --> Auth
+Routes --> Services
+
+Services --> ORM
+ORM --> Driver
+Driver --> DB
+
+@enduml
