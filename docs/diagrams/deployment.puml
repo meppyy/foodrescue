@@ -1,0 +1,31 @@
+@startuml FoodRescue_Deployment_Diagram
+
+title FoodRescue — Deployment Diagram
+
+skinparam shadowing false
+skinparam nodeStyle rectangle
+
+node "Client Device" as Client {
+    node "Web Browser" as Browser {
+        artifact "FoodRescue Web UI"
+    }
+}
+
+node "Application Server" as AppServer {
+    node "Flask Application" as Flask {
+        artifact "Routes / Controllers"
+        artifact "Business Services"
+        artifact "Authentication & Authorization"
+        artifact "SQLAlchemy ORM"
+        artifact "PyMySQL Driver"
+    }
+}
+
+database "MySQL Database Server" as MySQL {
+    artifact "FoodRescue Database"
+}
+
+Browser --> Flask : HTTP
+Flask --> MySQL : MySQL / PyMySQL\nDatabase Connection
+
+@enduml
