@@ -1,0 +1,24 @@
+@startuml FoodRescue_Delivery_Assignment_State
+
+title FoodRescue — Pickup / Delivery Assignment State Diagram
+
+[*] --> Unassigned
+
+Unassigned --> Assigned : Volunteer assigned
+Assigned --> "Pickup Scheduled" : Pickup time set
+Assigned --> Unassigned : Volunteer rejects / unavailable
+
+"Pickup Scheduled" --> "Picked Up" : Food collected
+"Pickup Scheduled" --> Failed : Pickup failed
+"Pickup Scheduled" --> Cancelled : Assignment cancelled
+
+"Picked Up" --> "In Transit" : Delivery starts
+"In Transit" --> Delivered : Delivery successful
+"In Transit" --> Failed : Delivery fails
+
+Delivered --> [*]
+Failed --> Unassigned : Reassignment required
+Failed --> [*]
+Cancelled --> [*]
+
+@enduml

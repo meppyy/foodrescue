@@ -1,0 +1,29 @@
+@startuml FoodRescue_Food_Listing_State
+
+title FoodRescue — Food Listing State Diagram
+
+[*] --> Draft
+
+Draft --> Available : Submit valid listing
+Available --> Requested : Request received
+Available --> Cancelled : Donor cancels
+Available --> Expired : Expiry time reached
+
+Requested --> Allocated : Request approved
+Requested --> Expired : Expiry time reached
+Requested --> Cancelled : Listing cancelled
+
+Allocated --> "Pickup Pending" : Allocation created
+Allocated --> Cancelled : Allocation cancelled
+
+"Pickup Pending" --> Collected : Pickup confirmed
+"Pickup Pending" --> Expired : Food expires
+"Pickup Pending" --> Cancelled : Allocation cancelled
+
+Collected --> Delivered : Delivery confirmed
+
+Delivered --> [*]
+Expired --> [*]
+Cancelled --> [*]
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml FoodRescue_Food_Request_State
+
+title FoodRescue — Food Request State Diagram
+
+[*] --> Pending : Request submitted
+
+Pending --> Approved : Donor / Admin approves
+Pending --> Rejected : Donor / Admin rejects
+Pending --> Cancelled : Recipient cancels
+Pending --> Expired : Food expires
+
+Approved --> Allocated : Allocation created
+Approved --> Cancelled : Request cancelled
+
+Allocated --> Completed : Redistribution completed
+Allocated --> Expired : Food expires
+Allocated --> Cancelled : Allocation cancelled
+
+Rejected --> [*]
+Cancelled --> [*]
+Expired --> [*]
+Completed --> [*]
+
+@enduml
