@@ -1,0 +1,242 @@
+@startuml FoodRescue_Class_Diagram
+
+title FoodRescue — Class Diagram
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+' =========================
+' Domain Classes
+' =========================
+
+class User {
+    +userId : Integer
+    +name : String
+    +email : String
+    +password : String
+    +phone : String
+    +role : String
+    +status : String
+    +createdAt : DateTime
+    --
+    +register()
+    +login()
+    +logout()
+    +updateProfile()
+}
+
+class Donor {
+    +donorId : Integer
+    +organizationName : String
+    +address : String
+    --
+    +createListing()
+    +editListing()
+    +cancelListing()
+    +viewRequests()
+    +approveRequest()
+    +rejectRequest()
+    +confirmHandover()
+}
+
+class Recipient {
+    +recipientId : Integer
+    +organizationName : String
+    +verificationStatus : String
+    +address : String
+    --
+    +browseFood()
+    +searchFood()
+    +filterFood()
+    +requestFood()
+    +cancelRequest()
+    +trackRequest()
+    +confirmReceipt()
+}
+
+class Volunteer {
+    +volunteerId : Integer
+    +availability : String
+    +serviceArea : String
+    --
+    +viewAssignments()
+    +acceptAssignment()
+    +rejectAssignment()
+    +confirmPickup()
+    +updateDeliveryStatus()
+    +confirmDelivery()
+}
+
+class FoodListing {
+    +listingId : Integer
+    +foodName : String
+    +category : String
+    +quantity : Decimal
+    +preparationTime : DateTime
+    +listingTime : DateTime
+    +expiryTime : DateTime
+    +location : String
+    +dietaryType : String
+    +status : String
+    --
+    +create()
+    +update()
+    +cancel()
+    +checkAvailability()
+    +updateStatus()
+}
+
+class FoodRequest {
+    +requestId : Integer
+    +requestedQuantity : Decimal
+    +requestTime : DateTime
+    +status : String
+    --
+    +submit()
+    +approve()
+    +reject()
+    +cancel()
+    +updateStatus()
+}
+
+class Allocation {
+    +allocationId : Integer
+    +pickupTime : DateTime
+    +deliveryTime : DateTime
+    +status : String
+    --
+    +create()
+    +assignVolunteer()
+    +updateStatus()
+    +cancel()
+}
+
+class Notification {
+    +notificationId : Integer
+    +message : String
+    +type : String
+    +readStatus : Boolean
+    +createdAt : DateTime
+    --
+    +create()
+    +markAsRead()
+}
+
+' =========================
+' Service Classes
+' =========================
+
+class AuthenticationService {
+    +registerUser()
+    +authenticateUser()
+    +authorizeUser()
+    +logoutUser()
+}
+
+class FoodListingService {
+    +createListing()
+    +validateListing()
+    +updateListing()
+    +cancelListing()
+    +getAvailableListings()
+}
+
+class PrioritizationService {
+    +calculatePriority()
+    +classifyPriority()
+    +getPriorityFactors()
+}
+
+class MatchingService {
+    +findEligibleRecipients()
+    +checkCompatibility()
+    +rankRecipients()
+}
+
+class RequestService {
+    +createRequest()
+    +validateRequest()
+    +approveRequest()
+    +rejectRequest()
+    +createAllocation()
+}
+
+class DeliveryService {
+    +findVolunteer()
+    +assignVolunteer()
+    +schedulePickup()
+    +confirmPickup()
+    +updateDelivery()
+    +confirmDelivery()
+}
+
+class ExpiryService {
+    +checkActiveListings()
+    +calculateUrgency()
+    +expireListing()
+    +handleAffectedRequests()
+}
+
+class NotificationService {
+    +createNotification()
+    +notifyUser()
+    +markAsRead()
+}
+
+class ImpactService {
+    +calculateFoodListed()
+    +calculateFoodRedistributed()
+    +calculateFoodExpired()
+    +calculateSuccessfulDonations()
+    +getImpactStatistics()
+}
+
+' =========================
+' Domain Relationships
+' =========================
+
+User "1" -- "0..1" Donor
+User "1" -- "0..1" Recipient
+User "1" -- "0..1" Volunteer
+
+Donor "1" -- "0..*" FoodListing
+Recipient "1" -- "0..*" FoodRequest
+FoodListing "1" -- "0..*" FoodRequest
+
+FoodRequest "1" -- "0..1" Allocation
+Volunteer "1" -- "0..*" Allocation
+
+User "1" -- "0..*" Notification
+
+' =========================
+' Service Dependencies
+' =========================
+
+AuthenticationService ..> User
+
+FoodListingService ..> FoodListing
+FoodListingService ..> Donor
+
+PrioritizationService ..> FoodListing
+MatchingService ..> FoodListing
+MatchingService ..> Recipient
+
+RequestService ..> FoodRequest
+RequestService ..> FoodListing
+RequestService ..> Allocation
+RequestService ..> Recipient
+
+DeliveryService ..> Allocation
+DeliveryService ..> Volunteer
+
+ExpiryService ..> FoodListing
+ExpiryService ..> FoodRequest
+
+NotificationService ..> Notification
+NotificationService ..> User
+
+ImpactService ..> FoodListing
+ImpactService ..> FoodRequest
+ImpactService ..> Allocation
+
+@enduml
