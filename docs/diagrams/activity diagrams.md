@@ -9,7 +9,7 @@ Activity diagrams represent the flow of major workflows within the FoodRescue sy
 The Donor Food Listing activity diagram represents the process of creating and validating a surplus-food listing.
 
 Source:
-`activity donor listing.puml`
+`donor listing.puml`
 
 ### 3.3.2 Recipient Food Request
 
@@ -39,3 +39,13 @@ The workflow also accounts for volunteer rejection or unavailability, food becom
 
 Source:
 `pickup delivery.puml`
+
+### 3.3.5 Food Expiry Handling
+
+The Food Expiry Handling activity diagram represents the process through which active food listings are checked against their expiry time.
+
+Listings are classified according to the remaining time before expiry. When a listing expires, the system marks it as unavailable, prevents new requests, handles affected pending requests, notifies relevant users, and records the expiry event.
+
+Source:
+`expiry handling.puml`
+

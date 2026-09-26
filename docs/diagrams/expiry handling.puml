@@ -1,0 +1,58 @@
+@startuml FoodRescue_Expiry_Handling
+
+title FoodRescue — Food Expiry Handling Activity
+
+start
+
+:Select active food listings;
+:Check current time against expiry time;
+
+if (Expiry time passed?) then (No)
+
+    if (More than 24 hours remaining?) then (Yes)
+
+        :Classify as Normal;
+
+    else (No)
+
+        if (6–24 hours remaining?) then (Yes)
+
+            :Classify as Attention;
+
+        else (No)
+
+            :Classify as Urgent;
+
+        endif
+
+    endif
+
+    :Display expiry urgency;
+    :Notify relevant users when required;
+
+else (Yes)
+
+    :Mark listing as Expired;
+    :Prevent new food requests;
+
+    :Check for pending requests;
+
+    if (Pending request exists?) then (Yes)
+
+        :Cancel affected pending request;
+        :Notify recipient;
+        :Notify donor;
+
+    else (No)
+
+        :Continue without request cancellation;
+
+    endif
+
+    :Record expiry event;
+
+endif
+
+stop
+
+@enduml
