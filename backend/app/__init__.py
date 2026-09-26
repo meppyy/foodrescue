@@ -1,5 +1,7 @@
 from flask import Flask
 
+from .extensions import db, login_manager
+
 
 def create_app():
     app = Flask(
@@ -9,6 +11,9 @@ def create_app():
     )
 
     app.config.from_object("app.config.Config")
+
+    db.init_app(app)
+    login_manager.init_app(app)
 
     @app.get("/api/health")
     def health_check():
