@@ -2,6 +2,7 @@ from flask import Flask
 
 from .extensions import db, login_manager
 from . import models
+from .routes import auth_bp
 
 
 def create_app():
@@ -16,11 +17,18 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
 
+    @login_manager.user_loader
+    def load_user(user_id):
+        from .models import User
+        return db.session.get(User, int(user_id))
+
     @app.get("/api/health")
     def health_check():
         return {
             "status": "success",
             "message": "FoodRescue backend is running",
         }
+
+    app.register_blueprint(auth_bp)
 
     return app
