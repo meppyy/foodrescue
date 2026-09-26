@@ -1,3 +1,7 @@
+# FoodRescue — Non-Functional Requirements
+
+## 2.2 Non-Functional Requirements
+
 ### 2.2.1 Security
 
 NFR-SEC-01: The system shall require authentication before allowing access to protected functionality.
