@@ -1,0 +1,72 @@
+@startuml FoodRescue_UI_Navigation
+
+title FoodRescue — UI Navigation Structure
+
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+rectangle "Landing Page" as Landing
+
+rectangle "Authentication" as Auth {
+    rectangle "Login" as Login
+    rectangle "Registration" as Register
+}
+
+rectangle "Donor Dashboard" as DonorDash
+rectangle "Recipient Dashboard" as RecipientDash
+rectangle "Volunteer Dashboard" as VolunteerDash
+rectangle "Admin Dashboard" as AdminDash
+
+rectangle "Donor Functions" as DonorFunctions {
+    rectangle "Food Listings" as DonorListings
+    rectangle "Requests" as DonorRequests
+    rectangle "Donation History" as DonorHistory
+    rectangle "Impact Statistics" as DonorImpact
+}
+
+rectangle "Recipient Functions" as RecipientFunctions {
+    rectangle "Browse / Search Food" as BrowseFood
+    rectangle "My Requests" as RecipientRequests
+    rectangle "Allocations" as RecipientAllocations
+    rectangle "Request History" as RecipientHistory
+}
+
+rectangle "Volunteer Functions" as VolunteerFunctions {
+    rectangle "Assignments" as Assignments
+    rectangle "Pickup / Delivery Status" as DeliveryStatus
+    rectangle "Assignment History" as AssignmentHistory
+}
+
+rectangle "Administrator Functions" as AdminFunctions {
+    rectangle "User Management" as UserManagement
+    rectangle "Recipient Verification" as Verification
+    rectangle "Listings / Requests Monitoring" as Monitoring
+    rectangle "Reports / Statistics" as Reports
+    rectangle "Issues / Categories / Settings" as AdminSettings
+}
+
+rectangle "Common Functions" as Common {
+    rectangle "Profile" as Profile
+    rectangle "Notifications" as Notifications
+    rectangle "Logout" as Logout
+}
+
+Landing --> Login
+Landing --> Register
+
+Login --> DonorDash : Donor
+Login --> RecipientDash : Recipient
+Login --> VolunteerDash : Volunteer
+Login --> AdminDash : Administrator
+
+DonorDash --> DonorFunctions
+RecipientDash --> RecipientFunctions
+VolunteerDash --> VolunteerFunctions
+AdminDash --> AdminFunctions
+
+DonorFunctions --> Common
+RecipientFunctions --> Common
+VolunteerFunctions --> Common
+AdminFunctions --> Common
+
+@enduml
