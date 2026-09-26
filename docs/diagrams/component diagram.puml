@@ -1,0 +1,87 @@
+@startuml FoodRescue_Component_Diagram
+
+title FoodRescue — Component Diagram
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+package "Client" {
+    [Web Browser] as Browser
+}
+
+package "Presentation Layer" {
+    [FoodRescue Web UI] as UI
+}
+
+package "Application Layer" {
+
+    [Authentication &\nAuthorization] as Auth
+    [Food Listing] as Listing
+    [Search & Filtering] as Search
+    [Prioritization] as Priority
+    [Recipient Matching] as Matching
+    [Request & Allocation] as Request
+    [Pickup & Delivery] as Delivery
+    [Expiry Management] as Expiry
+    [Notification] as Notification
+    [Dashboard & Impact] as Dashboard
+    [Administration] as Admin
+}
+
+package "Data Access Layer" {
+    [SQLAlchemy Data Access] as ORM
+    [PyMySQL Driver] as Driver
+}
+
+database "MySQL Database" as DB
+
+Browser --> UI : HTTP
+
+UI --> Auth
+UI --> Listing
+UI --> Search
+UI --> Request
+UI --> Delivery
+UI --> Dashboard
+UI --> Admin
+
+Listing --> Priority
+Listing --> Search
+Listing --> Matching
+Listing --> Expiry
+
+Matching --> Request
+Priority --> Matching
+
+Request --> Delivery
+Request --> Notification
+
+Delivery --> Notification
+Expiry --> Notification
+Listing --> Notification
+
+Dashboard --> Listing
+Dashboard --> Request
+Dashboard --> Delivery
+Dashboard --> Expiry
+
+Admin --> Auth
+Admin --> Listing
+Admin --> Request
+Admin --> Delivery
+Admin --> Dashboard
+
+Auth --> ORM
+Listing --> ORM
+Search --> ORM
+Request --> ORM
+Delivery --> ORM
+Expiry --> ORM
+Notification --> ORM
+Dashboard --> ORM
+Admin --> ORM
+
+ORM --> Driver
+Driver --> DB
+
+@enduml
