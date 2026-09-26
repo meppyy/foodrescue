@@ -1,0 +1,64 @@
+@startuml FoodRescue_Sequence_Pickup_Delivery
+
+title FoodRescue — Pickup & Delivery
+
+actor Volunteer
+actor Recipient
+participant "Web Interface" as UI
+participant "Delivery Service" as DeliveryService
+participant "Notification Service" as Notification
+database "MySQL Database" as DB
+
+Volunteer -> UI : View available assignment
+UI -> DeliveryService : Get assignment
+DeliveryService -> DB : Fetch assignment
+DB --> DeliveryService : Assignment details
+DeliveryService --> UI : Assignment details
+UI --> Volunteer : Display assignment
+
+Volunteer -> UI : Accept assignment
+UI -> DeliveryService : Accept assignment
+DeliveryService -> DB : Update assignment status = Assigned
+DB --> DeliveryService : Status updated
+
+DeliveryService -> Notification : Notify relevant users
+Notification -> DB : Store notification
+
+Volunteer -> UI : Confirm pickup
+UI -> DeliveryService : Update pickup status
+DeliveryService -> DB : Verify allocation and pickup
+DB --> DeliveryService : Validation result
+
+alt Pickup valid
+    DeliveryService -> DB : Update status = Picked Up
+    DB --> DeliveryService : Updated
+
+    DeliveryService -> DB : Update status = In Transit
+    DB --> DeliveryService : Updated
+
+    DeliveryService -> Notification : Notify recipient
+    Notification -> DB : Store notification
+
+    Volunteer -> UI : Confirm delivery
+    UI -> DeliveryService : Update delivery status
+
+    DeliveryService -> DB : Update status = Delivered
+    DB --> DeliveryService : Updated
+
+    DeliveryService -> Notification : Notify recipient
+    Notification -> DB : Store notification
+
+    Recipient -> UI : Confirm receipt
+    UI -> DeliveryService : Record receipt confirmation
+    DeliveryService -> DB : Mark transaction completed
+    DB --> DeliveryService : Transaction completed
+
+else Pickup invalid / unavailable
+    DeliveryService -> DB : Update status = Failed
+    DB --> DeliveryService : Status updated
+
+    DeliveryService -> Notification : Notify relevant users
+    Notification -> DB : Store notification
+end
+
+@enduml

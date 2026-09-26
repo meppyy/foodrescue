@@ -1,0 +1,55 @@
+@startuml FoodRescue_Sequence_Request_Allocation
+
+title FoodRescue — Request Approval & Allocation
+
+actor "Donor / Administrator" as Reviewer
+participant "Web Interface" as UI
+participant "Request Service" as RequestService
+participant "Allocation Service" as Allocation
+participant "Notification Service" as Notification
+database "MySQL Database" as DB
+
+Reviewer -> UI : View pending requests
+UI -> RequestService : Get pending requests
+RequestService -> DB : Query requests
+DB --> RequestService : Pending requests
+RequestService --> UI : Request data
+UI --> Reviewer : Display requests
+
+Reviewer -> UI : Approve request
+UI -> RequestService : Approve request
+
+RequestService -> DB : Verify request status
+DB --> RequestService : Request details
+
+RequestService -> DB : Check available quantity
+DB --> RequestService : Available quantity
+
+alt Quantity available
+    RequestService -> DB : Update request status = Approved
+    DB --> RequestService : Status updated
+
+    RequestService -> Allocation : Create allocation
+    Allocation -> DB : Store allocation
+    DB --> Allocation : Allocation created
+
+    Allocation -> DB : Reserve allocated quantity
+    DB --> Allocation : Quantity updated
+
+    Allocation -> Notification : Notify recipient
+    Notification -> DB : Store notification
+    Notification --> Allocation : Notification recorded
+
+    Allocation --> RequestService : Allocation complete
+    RequestService --> UI : Approval successful
+    UI --> Reviewer : Display allocation confirmation
+
+else Quantity unavailable
+    RequestService -> DB : Update request status = Rejected
+    RequestService -> Notification : Notify recipient
+    Notification -> DB : Store notification
+    RequestService --> UI : Allocation failed
+    UI --> Reviewer : Display failure message
+end
+
+@enduml

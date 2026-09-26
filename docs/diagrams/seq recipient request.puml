@@ -1,0 +1,52 @@
+@startuml FoodRescue_Sequence_Recipient_Request
+
+title FoodRescue — Recipient Requests Food
+
+actor Recipient
+participant "Web Interface" as UI
+participant "Food Listing Service" as ListingService
+participant "Request Service" as RequestService
+participant "Validation Service" as Validator
+participant "Notification Service" as Notification
+database "MySQL Database" as DB
+
+Recipient -> UI : Browse food listings
+UI -> ListingService : Request available listings
+ListingService -> DB : Query available listings
+DB --> ListingService : Available listings
+ListingService --> UI : Listing results
+UI --> Recipient : Display listings
+
+Recipient -> UI : Select food listing
+UI -> ListingService : Get listing details
+ListingService -> DB : Fetch listing
+DB --> ListingService : Listing details
+ListingService --> UI : Listing details
+UI --> Recipient : Display details
+
+Recipient -> UI : Enter requested quantity
+Recipient -> UI : Submit request
+
+UI -> Validator : Validate request
+Validator -> DB : Check food availability
+DB --> Validator : Available quantity
+
+alt Valid request
+    Validator --> UI : Validation successful
+    UI -> RequestService : Create request
+    RequestService -> DB : Store request
+    DB --> RequestService : Request created
+
+    RequestService -> Notification : Notify donor
+    Notification -> DB : Store notification
+    Notification --> RequestService : Notification recorded
+
+    RequestService --> UI : Request submitted
+    UI --> Recipient : Display confirmation
+
+else Invalid request
+    Validator --> UI : Validation error
+    UI --> Recipient : Display error
+end
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml FoodRescue_Sequence_Donor_Listing
+
+title FoodRescue — Donor Creates Food Listing
+
+actor Donor
+participant "Web Interface" as UI
+participant "Food Listing Service" as ListingService
+participant "Validation Service" as Validator
+participant "Prioritization Service" as Priority
+database "MySQL Database" as DB
+
+Donor -> UI : Open Create Listing
+UI --> Donor : Display listing form
+
+Donor -> UI : Enter food details
+Donor -> UI : Submit listing
+
+UI -> Validator : Validate listing data
+Validator --> UI : Validation result
+
+alt Valid data
+    UI -> ListingService : Create listing
+    ListingService -> DB : Store food listing
+    DB --> ListingService : Listing created
+
+    ListingService -> Priority : Calculate initial priority
+    Priority --> ListingService : Priority level
+
+    ListingService -> DB : Store priority
+    DB --> ListingService : Updated listing
+
+    ListingService --> UI : Listing created successfully
+    UI --> Donor : Display confirmation
+
+else Invalid data
+    Validator --> UI : Validation errors
+    UI --> Donor : Display errors
+end
+
+@enduml

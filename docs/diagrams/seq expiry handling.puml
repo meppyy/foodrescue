@@ -1,0 +1,44 @@
+@startuml FoodRescue_Sequence_Expiry
+
+title FoodRescue — Food Expiry Handling
+
+participant "Expiry Scheduler" as Scheduler
+participant "Expiry Service" as ExpiryService
+participant "Request Service" as RequestService
+participant "Notification Service" as Notification
+database "MySQL Database" as DB
+
+Scheduler -> ExpiryService : Check active listings
+ExpiryService -> DB : Retrieve active listings
+DB --> ExpiryService : Active listings
+
+loop For each active listing
+
+    ExpiryService -> ExpiryService : Compare current time\nwith expiry time
+
+    alt More than 24 hours remaining
+        ExpiryService -> DB : Set urgency = Normal
+
+    else 6–24 hours remaining
+        ExpiryService -> DB : Set urgency = Attention
+
+    else Less than 6 hours remaining
+        ExpiryService -> DB : Set urgency = Urgent
+
+    else Expired
+        ExpiryService -> DB : Set listing status = Expired
+        DB --> ExpiryService : Listing updated
+
+        ExpiryService -> RequestService : Check pending requests
+        RequestService -> DB : Find affected requests
+        DB --> RequestService : Pending requests
+
+        loop For each affected request
+            RequestService -> DB : Cancel request
+            RequestService -> Notification : Notify affected users
+            Notification -> DB : Store notification
+        end
+    end
+end
+
+@enduml
