@@ -1,0 +1,30 @@
+@startuml FoodRescue_Food_Listing_Lifecycle
+
+title FoodRescue — Food Listing Lifecycle
+
+[*] --> Draft : Listing created
+
+Draft --> Available : Valid listing submitted
+
+Available --> Requested : Valid request received
+Available --> Cancelled : Donor cancels
+Available --> Expired : Expiry time reached
+
+Requested --> Allocated : Request approved\nand allocation created
+Requested --> Expired : Expiry time reached
+Requested --> Cancelled : Listing cancelled
+
+Allocated --> "Pickup Pending" : Pickup coordination begins
+Allocated --> Cancelled : Allocation cancelled
+
+"Pickup Pending" --> Collected : Pickup confirmed
+"Pickup Pending" --> Expired : Expiry time reached
+"Pickup Pending" --> Cancelled : Allocation cancelled
+
+Collected --> Delivered : Delivery confirmed
+
+Delivered --> [*]
+Expired --> [*]
+Cancelled --> [*]
+
+@enduml
