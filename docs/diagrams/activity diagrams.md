@@ -28,3 +28,14 @@ An approved request is checked against the available food quantity before an all
 
 Source:
 `request allocation.puml`
+
+### 3.3.4 Pickup and Delivery
+
+The Pickup and Delivery activity diagram represents the physical-transfer workflow after a food allocation has been approved.
+
+The system assigns an available volunteer, schedules the pickup, records food collection, tracks the delivery process, and records recipient confirmation after successful delivery.
+
+The workflow also accounts for volunteer rejection or unavailability, food becoming unavailable before pickup, and failed delivery.
+
+Source:
+`pickup delivery.puml`

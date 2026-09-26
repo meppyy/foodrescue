@@ -1,0 +1,70 @@
+@startuml FoodRescue_Pickup_Delivery
+
+title FoodRescue — Pickup & Delivery Activity
+
+start
+
+:Approved allocation received;
+:Find available volunteer;
+
+if (Volunteer available?) then (Yes)
+
+    :Assign volunteer;
+    :Notify volunteer;
+    :Schedule pickup;
+
+    if (Volunteer accepts assignment?) then (Yes)
+
+        :Volunteer views pickup details;
+        :Travel to donor location;
+
+        if (Food still available?) then (Yes)
+
+            :Collect food;
+            :Confirm pickup;
+            :Set status to Picked Up;
+            :Update status to In Transit;
+
+            :Travel to recipient location;
+
+            if (Delivery successful?) then (Yes)
+
+                :Deliver food;
+                :Confirm delivery;
+                :Set status to Delivered;
+                :Notify recipient;
+                :Recipient confirms receipt;
+                :Mark transaction as completed;
+
+            else (No)
+
+                :Set delivery status to Failed;
+                :Notify relevant users;
+                :Begin issue resolution / reassignment;
+
+            endif
+
+        else (No)
+
+            :Cancel pickup;
+            :Notify relevant users;
+
+        endif
+
+    else (No)
+
+        :Assignment becomes unassigned;
+        :Search for another volunteer;
+
+    endif
+
+else (No)
+
+    :Keep allocation pending assignment;
+    :Retry volunteer assignment;
+
+endif
+
+stop
+
+@enduml
