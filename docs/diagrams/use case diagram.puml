@@ -1,0 +1,113 @@
+@startuml FoodRescue_Use_Case_Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+title FoodRescue — Use Case Diagram
+
+actor Donor
+actor Recipient
+actor Volunteer
+actor Administrator
+
+rectangle "FoodRescue\nSmart Food Surplus Management & Redistribution System" {
+
+  package "Authentication & Profile" {
+    usecase "Register" as UC_Register
+    usecase "Login" as UC_Login
+    usecase "Manage Profile" as UC_Profile
+  }
+
+  package "Donor Functions" {
+    usecase "Manage Food Listings" as UC_ManageListing
+    usecase "View Requests" as UC_ViewRequests
+    usecase "Approve / Reject Request" as UC_ApproveReject
+    usecase "Confirm Handover" as UC_Handover
+    usecase "View Donation History" as UC_DonationHistory
+    usecase "View Impact Statistics" as UC_DonorImpact
+  }
+
+  package "Recipient Functions" {
+    usecase "Browse / Search Food" as UC_BrowseFood
+    usecase "Request Food" as UC_RequestFood
+    usecase "Track Request" as UC_TrackRequest
+    usecase "View Allocation" as UC_ViewAllocation
+    usecase "Confirm Receipt" as UC_Receipt
+    usecase "View Request History" as UC_RequestHistory
+  }
+
+  package "Volunteer Functions" {
+    usecase "Manage Availability" as UC_Availability
+    usecase "View Assignments" as UC_ViewAssignments
+    usecase "Accept / Reject Assignment" as UC_AcceptReject
+    usecase "Update Pickup Status" as UC_PickupStatus
+    usecase "Confirm Pickup" as UC_ConfirmPickup
+    usecase "Update Delivery Status" as UC_DeliveryStatus
+    usecase "Confirm Delivery" as UC_ConfirmDelivery
+    usecase "View Assignment History" as UC_AssignmentHistory
+  }
+
+  package "Administration" {
+    usecase "Manage Users" as UC_ManageUsers
+    usecase "Verify Recipient" as UC_VerifyRecipient
+    usecase "Monitor Food Listings" as UC_MonitorListings
+    usecase "Monitor Requests & Allocations" as UC_MonitorRequests
+    usecase "Manage Issues / Disputes" as UC_Disputes
+    usecase "Manage Food Categories" as UC_Categories
+    usecase "View Reports / Statistics" as UC_Reports
+    usecase "Manage Notifications / Settings" as UC_Settings
+  }
+}
+
+' Authentication
+Donor --> UC_Register
+Recipient --> UC_Register
+Volunteer --> UC_Register
+
+Donor --> UC_Login
+Recipient --> UC_Login
+Volunteer --> UC_Login
+Administrator --> UC_Login
+
+Donor --> UC_Profile
+Recipient --> UC_Profile
+
+' Donor
+Donor --> UC_ManageListing
+Donor --> UC_ViewRequests
+Donor --> UC_ApproveReject
+Donor --> UC_Handover
+Donor --> UC_DonationHistory
+Donor --> UC_DonorImpact
+
+' Recipient
+Recipient --> UC_BrowseFood
+Recipient --> UC_RequestFood
+Recipient --> UC_TrackRequest
+Recipient --> UC_ViewAllocation
+Recipient --> UC_Receipt
+Recipient --> UC_RequestHistory
+
+' Volunteer
+Volunteer --> UC_Availability
+Volunteer --> UC_ViewAssignments
+Volunteer --> UC_AcceptReject
+Volunteer --> UC_PickupStatus
+Volunteer --> UC_ConfirmPickup
+Volunteer --> UC_DeliveryStatus
+Volunteer --> UC_ConfirmDelivery
+Volunteer --> UC_AssignmentHistory
+
+' Administrator
+Administrator --> UC_ManageUsers
+Administrator --> UC_VerifyRecipient
+Administrator --> UC_MonitorListings
+Administrator --> UC_MonitorRequests
+Administrator --> UC_Disputes
+Administrator --> UC_Categories
+Administrator --> UC_Reports
+Administrator --> UC_Settings
+
+@enduml
