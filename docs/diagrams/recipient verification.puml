@@ -1,0 +1,31 @@
+@startuml FoodRescue_Recipient_Verification
+
+title FoodRescue — Recipient Verification Activity
+
+start
+
+:Recipient submits registration;
+:Create recipient account;
+:Set verification status to Pending;
+:Notify administrator;
+
+:Administrator reviews recipient information;
+
+if (Information valid?) then (Yes)
+
+    :Approve recipient registration;
+    :Set verification status to Approved;
+    :Enable eligible recipient functionality;
+    :Notify recipient;
+
+else (No)
+
+    :Reject recipient registration;
+    :Set verification status to Rejected;
+    :Notify recipient;
+
+endif
+
+stop
+
+@enduml

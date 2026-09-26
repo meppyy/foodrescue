@@ -49,3 +49,11 @@ Listings are classified according to the remaining time before expiry. When a li
 Source:
 `expiry handling.puml`
 
+### 3.3.6 Recipient Verification
+
+The Recipient Verification activity diagram represents the process through which a newly registered recipient is reviewed by an administrator.
+
+The administrator evaluates the provided information and either approves or rejects the registration. An approved recipient is granted access to functionality requiring recipient eligibility.
+
+Source:
+`recipient verification.puml`
